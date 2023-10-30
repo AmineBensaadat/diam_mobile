@@ -1,39 +1,41 @@
-import 'dart:convert';
-
 import 'package:diam/screens/all_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:rive/rive.dart';
-import 'package:http/http.dart' as http;
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class ParametreForm extends StatefulWidget {
+  const ParametreForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<ParametreForm> createState() => ParametreFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class ParametreFormState extends State<ParametreForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController loginEmailController = TextEditingController();
-  TextEditingController loginPasswordController = TextEditingController();
 
   bool isSwitchOn = false;
-  FocusNode loginFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
+  FocusNode serveurFocusNode = FocusNode();
+  FocusNode portFocusNode = FocusNode();
+  FocusNode siteFocusNode = FocusNode();
   String hintText = '';
   @override
   void initState() {
     super.initState();
-    loginFocusNode.addListener(() {
-      if (loginFocusNode.hasFocus) {
+    serveurFocusNode.addListener(() {
+      if (serveurFocusNode.hasFocus) {
         hintText = '';
       }
       setState(() {});
     });
 
-    passwordFocusNode.addListener(() {
-      if (passwordFocusNode.hasFocus) {
+    portFocusNode.addListener(() {
+      if (portFocusNode.hasFocus) {
+        hintText = '';
+      }
+      setState(() {});
+    });
+
+    siteFocusNode.addListener(() {
+      if (siteFocusNode.hasFocus) {
         hintText = '';
       }
       setState(() {});
@@ -51,14 +53,13 @@ class _LoginFormState extends State<LoginForm> {
                 child: FractionallySizedBox(
                   widthFactor: 0.8,
                   child: TextFormField(
-                    controller: loginEmailController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "";
                       }
                       return null;
                     },
-                    focusNode: loginFocusNode,
+                    focusNode: serveurFocusNode,
                     textAlign: TextAlign.center,
                     //autofocus: true,
                     style: const TextStyle(
@@ -67,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
                       filled: true,
                       fillColor: Colors.black.withOpacity(0.4),
                       hintText:
-                          loginFocusNode.hasFocus ? hintText : 'Identifiant',
+                          serveurFocusNode.hasFocus ? hintText : 'Serveur',
                       hintStyle:
                           const TextStyle(fontSize: 18.0, color: Colors.white),
                       contentPadding:
@@ -84,29 +85,27 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 40,
               ),
               Center(
                 child: FractionallySizedBox(
                   widthFactor: 0.8,
                   child: TextFormField(
-                    controller: loginPasswordController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "";
                       }
                       return null;
                     },
-                    focusNode: passwordFocusNode,
+                    focusNode: portFocusNode,
                     textAlign: TextAlign.center,
-                    obscureText: true,
+                    //autofocus: true,
                     style: const TextStyle(
                         fontSize: 22.0, color: Color(0xFFbdc6cf)),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black.withOpacity(0.4),
-                      hintText:
-                          passwordFocusNode.hasFocus ? hintText : 'Password',
+                      hintText: portFocusNode.hasFocus ? hintText : 'Port',
                       hintStyle:
                           const TextStyle(fontSize: 18.0, color: Colors.white),
                       contentPadding:
@@ -123,39 +122,43 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Souvenir de moi",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+              Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.8,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "";
+                      }
+                      return null;
+                    },
+                    focusNode: siteFocusNode,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black.withOpacity(0.4),
+                      hintText: siteFocusNode.hasFocus ? hintText : 'site',
+                      hintStyle:
+                          const TextStyle(fontSize: 18.0, color: Colors.white),
+                      contentPadding:
+                          const EdgeInsets.only(left: 0, bottom: 8.0, top: 8.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(25.7),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.7),
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  FlutterSwitch(
-                    height: 20.0,
-                    width: 40.0,
-                    padding: 4.0,
-                    toggleSize: 15.0,
-                    borderRadius: 10.0,
-                    activeColor: const Color(0xFFe57e25),
-                    value: isSwitchOn,
-                    onToggle: (value) {
-                      setState(() {
-                        isSwitchOn = value;
-                      });
-                    },
-                  ),
-                ],
+                ),
               ),
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               Center(
                 child: FractionallySizedBox(
@@ -177,12 +180,33 @@ class _LoginFormState extends State<LoginForm> {
                         isShowConfetti = true;
                         isShowLoading = true;
                       });
-                      
                       Future.delayed(
                         const Duration(seconds: 1),
-                        () async {
+                        () {
                           if (_formKey.currentState!.validate()) {
-                            await checkLogin(loginEmailController, loginPasswordController);
+                            // if validation is true show the success animation
+                            success.fire();
+                            Future.delayed(
+                              const Duration(seconds: 2),
+                              () {
+                                setState(() {
+
+                                  isShowLoading = false;
+                                });
+                                // Navigate & hide confetti
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  // Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Dashboard(),
+                                    ),
+                                  );
+                                });
+                                // after closing it want to show conffit animation
+                                confetti.fire();
+                              },
+                            );
                           } else {
                             // if error it show annimation error
                             error.fire();
@@ -199,7 +223,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                       );
                     },
-                    child: const Text('Se Connecter'),
+                    child: const Text('Enregistrer'),
                   ),
                 ),
               ),
@@ -228,49 +252,6 @@ class _LoginFormState extends State<LoginForm> {
             )
           : const SizedBox(),
     ]);
-  }
-
-  Future<void> checkLogin(
-      TextEditingController login, TextEditingController password) async {
-    var headers = {"Content-Type": "application/json"};
-    var body = {'email': login.text.trim(), 'password': password.text};
-    http.Response response;
-    response = await http.post(Uri.parse('https://reqres.in/api/login'),
-        headers: headers, body: jsonEncode(body));
-    //Map jsonData = jsonDecode(response.body.toString());
-    //print(jsonData['error']);
-    if (response.statusCode == 200) {
-      success.fire();
-      await Future.delayed(
-        const Duration(seconds: 2),
-        () async {
-          setState(() {
-            isShowLoading = false;
-          });
-          confetti.fire();
-          reset.fire();
-        },
-      );
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Dashboard(),
-          ),
-        );
-      });
-    } else {
-      error.fire();
-      Future.delayed(
-        const Duration(seconds: 2),
-        () {
-          setState(() {
-            isShowLoading = false;
-          });
-          reset.fire();
-        },
-      );
-    }
   }
 }
 

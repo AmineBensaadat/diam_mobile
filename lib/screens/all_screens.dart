@@ -1,4 +1,5 @@
 import 'package:diam/screens/dashboard_screen.dart';
+import 'package:diam/screens/recherche_client.dart';
 import 'package:diam/shared/appbar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,6 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   late TabController _tabController;
 
@@ -25,7 +24,7 @@ class _DashboardState extends State<Dashboard>
 
   static final List<Widget> _bodyView = [
     const DashboardScreen(),
-    const DashboardScreen(),
+    const RechrcheClient(),
   ];
 
   Widget _tabItem(Widget child, EdgeInsets margin) {

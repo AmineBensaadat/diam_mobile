@@ -10,7 +10,10 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => DashboardScreenState();
 }
 
+List<String> list = ['2023', '2022', '2021', '2020'];
+
 class DashboardScreenState extends State<DashboardScreen> {
+  String dropdownValue = list.first;
   double width = 0;
   @override
   void initState() {
@@ -36,25 +39,52 @@ class DashboardScreenState extends State<DashboardScreen> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
-              width: width,
-              child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(60),
-                    ),
-                    color: Color(0xFF00aeef)),
-                height: 43,
-                width: width,
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                  child: Text(
-                    'Tableau de Bord - 2023',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: DropdownButton(
+                    dropdownColor: const Color(0xFF030d40),
+                    value: dropdownValue,
+                    underline: const SizedBox(),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        dropdownValue = value!;
+                      });
+                    },
+                    items: list.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ),
-              ),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  width: width,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(60),
+                        ),
+                        color: Color(0xFF00aeef)),
+                    height: 43,
+                    width: width,
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        'Tableau de Bord - 2023',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 50),
             const Row(
